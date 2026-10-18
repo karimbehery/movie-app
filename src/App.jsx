@@ -70,7 +70,6 @@ function App() {
                 </ul>
           )}
         </section>
-        <p>testing new branch</p>
       </main>
     </>
   );
