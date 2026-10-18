@@ -70,6 +70,7 @@ function App() {
                 </ul>
           )}
         </section>
+        <p>merge testing</p>
       </main>
     </>
   );
