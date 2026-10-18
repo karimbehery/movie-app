@@ -1,7 +1,7 @@
 import "./App.css";
 import Header from "./Components/Header";
 import { useState, useEffect } from "react";
-// import Movie from "./Components/Movie";
+import Movie from "./Components/Movie";
 import Spinner from "./Components/Spinner";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
@@ -22,10 +22,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchMovies = async () => {
+    const fetchMovies = async (query = '') => {
       setIsLoading(true);
       try {
-        const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+        const endpoint = query
+          ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+          : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
 
         const response = await fetch(endpoint, API_OPTIONS);
 
@@ -34,6 +36,7 @@ function App() {
         }
 
         const data = await response.json();
+        console.log(data.results)
 
         setMovieList(data.results || []);
       } catch (error) {
@@ -44,32 +47,25 @@ function App() {
       }
     };
 
-    fetchMovies();
-  }, []);
+    fetchMovies(searchTerm);
+  }, [searchTerm]);
 
   return (
     <>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <main className="p-20 w-full">
         <h2 className="text-5xl">Popular</h2>
-        <section className="movies flex flex-wrap gap-3 my-4 mx-auto justify-evenly">
-          {/* {movies.map((movie) => (
-            <Movie key={movie.imdbID} movie={movie} />
-          ))} */}
-        </section>
 
+        <h2 className="my-10 text-5xl">All Movies</h2>
         <section className="all-movies">
-          <h2 className="my-10 text-5xl">All Movies</h2>
           {isLoading ? (
             <Spinner />
           ) : errorMessage ? (
-              errorMessage 
+            errorMessage
           ) : (
-            <ul>
+            <ul className="flex flex-wrap gap-3 my-4 mx-auto justify-evenly">
               {movieList.map((movie) => (
-                <p className="text-white" key={movie.id}>
-                  {movie.title}
-                </p>
+                <Movie key={movie.id} movie={movie} />
               ))}
             </ul>
           )}
