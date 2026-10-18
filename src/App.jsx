@@ -67,9 +67,10 @@ function App() {
               {movieList.map((movie) => (
                 <Movie key={movie.id} movie={movie} />
               ))}
-            </ul>
+                </ul>
           )}
         </section>
+        <p>testing rule</p>
       </main>
     </>
   );
