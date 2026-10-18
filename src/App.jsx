@@ -70,7 +70,7 @@ function App() {
                 </ul>
           )}
         </section>
-        <p>testing rule</p>
+        <p>testing rule again</p>
       </main>
     </>
   );
