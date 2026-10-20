@@ -2,7 +2,11 @@ const Search = ({ searchTerm, setSearchTerm }) => {
   return (
     <section className="search">
       <section className="flex bg-[#0F0D23] lg:w-3xl md:w-2xl text-5xl sm:w-xl rounded-lg items-center p-4 gap-2 my-10">
-        <img src="./search.svg" alt="search icon" className="cursor-pointer" />
+        <img
+          src=".${import.meta.env.BASE_URL}search.svg"
+          alt="search icon"
+          className="cursor-pointer"
+        />
         <input
           type="text"
           placeholder="Search throuh 300+ movies online"
