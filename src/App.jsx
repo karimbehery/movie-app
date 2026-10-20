@@ -44,6 +44,7 @@ function App() {
         const data = await response.json();
 
         setMovieList(data.results || []);
+
       } catch (error) {
         console.error(`Error fetching movies: ${error}`);
         setErrorMessage("Error fetching movies. Please try again later.");
@@ -59,7 +60,6 @@ function App() {
     <>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <main className="w-full">
-        <h2 className="text-5xl">Popular</h2>
 
         <h2 className="my-10 text-5xl">All Movies</h2>
         <section className="all-movies">
