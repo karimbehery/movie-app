@@ -3,9 +3,9 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { useDebounce } from "react-use";
 
-import Header from "./components/Header";
-import Movie from "./components/Movie";
-import Spinner from "./components/Spinner";
+import Header from "./Components/Header";
+import Movie from "./Components/Movie";
+import Spinner from "./Components/Spinner";
 import { fetchMovies } from "./services/api";
 
 function App() {
