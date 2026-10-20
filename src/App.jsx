@@ -1,6 +1,9 @@
 import "./App.css";
-import Header from "./Components/Header";
+
 import { useState, useEffect } from "react";
+import { useDebounce } from 'react-use';
+
+import Header from "./Components/Header";
 import Movie from "./Components/Movie";
 import Spinner from "./Components/Spinner";
 
@@ -20,6 +23,9 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+
+  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
   useEffect(() => {
     const fetchMovies = async (query = '') => {
@@ -36,7 +42,6 @@ function App() {
         }
 
         const data = await response.json();
-        console.log(data.results)
 
         setMovieList(data.results || []);
       } catch (error) {
@@ -47,18 +52,19 @@ function App() {
       }
     };
 
-    fetchMovies(searchTerm);
-  }, [searchTerm]);
+    fetchMovies(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
 
   return (
     <>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <main className="p-20 w-full">
+      <main className="w-full">
         <h2 className="text-5xl">Popular</h2>
 
         <h2 className="my-10 text-5xl">All Movies</h2>
         <section className="all-movies">
-          {isLoading ? (
+          {movieList.length < 1 ? <p className="text-red-500 text-6xl">No Movies Found</p>
+            : isLoading ? (
             <Spinner />
           ) : errorMessage ? (
             errorMessage

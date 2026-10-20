@@ -7,14 +7,14 @@ const Movie = ({
         src={
           poster_path
             ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-            : "/nomovie.png"
+            : "./nomovie.png"
         }
         alt={title}
         className=" m-4 rounded-2xl w-lg h-60"
       />
       <p className="m-2">{title}</p>
       <article className="flex w-full gap-2">
-        <img src="/Rating.png" alt="rating" className="" />
+        <img src="./Rating.png" alt="rating" className="" />
         <p>{vote_average ? vote_average.toFixed(1) : "N/A"}</p>
         <p className="text-gray-500 font-bold">&bull; {original_language}</p>
         <p className="text-gray-500 font-bold">
