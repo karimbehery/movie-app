@@ -1,50 +1,29 @@
 import "./App.css";
 
 import { useState, useEffect } from "react";
-import { useDebounce } from 'react-use';
+import { useDebounce } from "react-use";
 
-import Header from "./Components/Header";
-import Movie from "./Components/Movie";
-import Spinner from "./Components/Spinner";
-
-const API_BASE_URL = "https://api.themoviedb.org/3";
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-
-const API_OPTIONS = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+import Header from "./components/Header";
+import Movie from "./components/Movie";
+import Spinner from "./components/Spinner";
+import { fetchMovies } from "./services/api";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
   useEffect(() => {
-    const fetchMovies = async (query = '') => {
+    const getMovies = async (query = "") => {
       setIsLoading(true);
       try {
-        const endpoint = query
-          ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-          : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+        const result = await fetchMovies(query);
 
-        const response = await fetch(endpoint, API_OPTIONS);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch movies");
-        }
-
-        const data = await response.json();
-
-        setMovieList(data.results || []);
-
+        setMovieList(result);
       } catch (error) {
         console.error(`Error fetching movies: ${error}`);
         setErrorMessage("Error fetching movies. Please try again later.");
@@ -53,18 +32,18 @@ function App() {
       }
     };
 
-    fetchMovies(debouncedSearchTerm);
+    getMovies(debouncedSearchTerm);
   }, [debouncedSearchTerm]);
 
   return (
     <>
       <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <main className="w-full">
-
         <h2 className="my-10 text-5xl">All Movies</h2>
         <section className="all-movies">
-          {movieList.length < 1 ? <p className="text-red-500 text-6xl">No Movies Found</p>
-            : isLoading ? (
+          {movieList.length < 1 ? (
+            <p className="text-red-500 text-6xl">No Movies Found</p>
+          ) : isLoading ? (
             <Spinner />
           ) : errorMessage ? (
             errorMessage
@@ -73,7 +52,7 @@ function App() {
               {movieList.map((movie) => (
                 <Movie key={movie.id} movie={movie} />
               ))}
-                </ul>
+            </ul>
           )}
         </section>
       </main>
