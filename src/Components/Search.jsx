@@ -5,7 +5,7 @@ const Search = ({ searchTerm, setSearchTerm }) => {
         <img src="./search.svg" alt="search icon" className="cursor-pointer" />
         <input
           type="text"
-          placeholder="Search throuhh 300+ movies online"
+          placeholder="Search through 300+ movies online"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full bg-[#0F0D23] border-0 text-xl outline-0"
